@@ -50,7 +50,7 @@ def download_webpage_and_parse_json(url, element_tag, paths):
             # 如果解析失败，则返回 None 或者处理其他逻辑
             print('content is not formatted in json')
     else:
-        return current_element.string
+        return current_element.text
 
 
 # ===== 主处理函数 =====
