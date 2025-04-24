@@ -1,6 +1,6 @@
 # 🌐 HWS Web Scraper Plugin
 
-This plugin allows you to extract **specific values** from structured JSON embedded in webpages, such as exchange rates or product data.
+> This plugin allows you to extract html element values in webpages.  
 
 ---
 
@@ -9,16 +9,33 @@ This plugin allows you to extract **specific values** from structured JSON embed
 1. **Input a URL**  
    The plugin fetches the webpage using the provided URL.
 
-2. **Parse JSON from HTML**  
-   It extracts JSON from the `<script id="__NEXT_DATA__">` tag using BeautifulSoup.
+2. **Parse element text from HTML**  
+   It extracts html element content using BeautifulSoup.
+```python
+soup = BeautifulSoup(resp.text, 'html.parser')
+element_tag = "html script#__NEXT_DATA__" # use jquery selector
+current_element = soup.select_one(element_tag)
+```
 
-3. **Specify a JSON path**  
+3. **Specify a JSON path**
+
+   if element content text is a json body, you should give 'paths' variable in the Coze Plugin Params.  
    Provide a `#`-separated path to locate the desired value inside the JSON structure.
+```python
+target_value = json_data
+for key in paths.split("#"):
+   if key.isdigit() and len(key) < 6:
+      key = int(key)
+   target_value = target_value[key]
+return str(target_value)
+```
+   if it is not a json body, the Plugin will return element content text directly.
 
 4. **Return the result**  
-   The plugin returns the value found at that path.
+   The plugin returns the value found at that path.  
+   Note: if the element content is text, you can pass the text to Coze LLM to further analyze.
 
-## try on coze
+## try on coze workflow
 ![](../_images/simple_page_parse_demo.png)
 
 ---
@@ -28,6 +45,7 @@ This plugin allows you to extract **specific values** from structured JSON embed
 ```json
 {
   "http_url": "https://wise.com/us/currency-converter/usd-to-cny-rate",
+  "element_tag": "html script#__NEXT_DATA__",
   "paths": "props#pageProps#model#rate#value"
 }
 ```
@@ -35,9 +53,10 @@ This plugin allows you to extract **specific values** from structured JSON embed
 ## 📤 Example Output
 ```json
 {
-  "result": "7.25725"
+  "data": "7.25725"
 }
 ```
+
 ## 🧭 Path Syntax
 Use # to navigate through keys and array indexes:
 
