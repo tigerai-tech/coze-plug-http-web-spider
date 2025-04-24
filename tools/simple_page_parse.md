@@ -36,8 +36,14 @@ return str(target_value)
    Note: if the element content is text, you can pass the text to Coze LLM to further analyze.
 
 ## try on coze workflow
+
+- case 1: from script json
+![](../_images/simple_page_parse_demo_findpaths.png)
 ![](../_images/simple_page_parse_demo.png)
 
+- case 2: from html element
+![](../_images/simple_page_parse_demo2_webpage.png)
+![](../_images/simple_page_parse_demo2_tryoncoze.png)
 ---
 
 ## 📥 Example Input
