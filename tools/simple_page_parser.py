@@ -36,6 +36,7 @@ def download_webpage_and_parse_json(url, element_tag, paths):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
     }
     resp = requests.get(url, headers=headers)
+    resp.encoding = 'utf-8'
     resp.raise_for_status()
 
     soup = BeautifulSoup(resp.text, 'html.parser')
